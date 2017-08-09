@@ -1,18 +1,38 @@
 <html>
   <head>
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
-    <link rel="stylesheet" href="static/css/fonts.css">
     <link rel="stylesheet" href="static/css/base.css">
+    <script src="/static/js/index.js"></script>
+    <!-- No Google Analytics, Neat -->
   </head>
   <body>
-    <div class="bordered" id="left">
-      Welcome to this situation
-      <button>Test</button>
+    <div id="main">
+      <div id="top">
+        <div tabindex="1" class="bordered" id="main-left">
+          Welcome to this situation
+          <button>Test</button>
+        </div>
+        <div tabindex="2" class="bordered" id="main-right">
+          Nvm the calm before the tempest
+        </div>
+      </div>
+      <div id="footer">
+        <div tabindex="6" class="bordered">
+          Footer
+        </div>
+      </div>
     </div>
-    <div>
-      <div class="bordered" id="right">
-        Nvm the calm before the tempest
+    <div id="right">
+      <div tabindex="3" class="bordered">
+        boop
+      </div>
+      <div tabindex="4" class="bordered">
+        beep
+      </div>
+      <div tabindex="5" class="bordered">
+        bam
       </div>
     </div>
   </body>
+  <!-- So you like source code? -->
 </html>
