@@ -1,0 +1,9 @@
+# !/bin/sh
+# Absolute path to this script, e.g. /home/user/bin/foo.sh
+SCRIPT=$(readlink -f "$0")
+# Absolute path this script is in, thus /home/user/bin
+SCRIPTPATH=$(dirname "$SCRIPT")
+
+make all
+node node_modules/http-server/bin/http-server ./dist -p 3333
+echo "Yeah"

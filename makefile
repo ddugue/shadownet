@@ -10,11 +10,11 @@ HTML_INCLUDE_SOURCE = $(filter-out $(HTML_SOURCE), $(shell find $(SRC)/ -type f 
 SCSS_VAR_SOURCE = $(shell find src/static/css -type f -name '_*.scss')
 SCSS_SOURCE = $(filter-out $(SCSS_VAR_SOURCE), $(shell find src/static/css -type f -name '*.scss'))
 JS_SOURCE = $(wildcard $(SRC)/static/js/*.js)
-ASSETS_SOURCE = $(shell find $(SRC)/static/fonts -type f) \
-								$(shell find $(SRC)/static/pdf -type f) \
-								$(shell find $(SRC)/static/img -type f) \
-								$(shell find $(SRC)/static/svg -type f) \
-								$(shell find $(SRC)/static/video -type f)
+ASSETS_SOURCE = $(shell find $(SRC)/static/img -type f) \
+								# $(shell find $(SRC)/static/pdf -type f) \
+								# $(shell find $(SRC)/static/fonts -type f) \
+								# $(shell find $(SRC)/static/svg -type f) \
+								# $(shell find $(SRC)/static/video -type f)
 
 #-- TEMP FILES
 HTML_TEMP = 	$(subst $(SRC)/, $(TMP)/, $(HTML_SOURCE))
@@ -37,7 +37,11 @@ endif
 $(DEST)/%.js: $(SRC)/%.js $(JS_SOURCE)
 	@echo "Browserifying file $@"
 	@mkdir -p "$(@D)"
-	@node node_modules/browserify/bin/cmd.js $< > $@
+ifneq ($(MODE),PROD)
+	@node node_modules/browserify/bin/cmd.js -d -t [ babelify --presets [ es2015 ] ] $< > $@
+else
+	@node node_modules/browserify/bin/cmd.js -t [ babelify --presets [ es2015 ] ] $< > $@
+endif
 
 %::
 	@echo "Copying file $(subst $(DEST)/, $(SRC)/, $@)"
@@ -47,6 +51,6 @@ $(DEST)/%.js: $(SRC)/%.js $(JS_SOURCE)
 css:  $(CSS_TARGET)
 js:   $(JS_TARGET)
 assets: $(ASSETS_TARGET)
-html: index.html
+html: $(HTML_TARGET)
 all: html css js assets
 .PHONY: all html css js assets
