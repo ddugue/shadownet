@@ -1,4 +1,11 @@
-import other from "./other";
+const Vue = require('vue');
+const other = require('./other');
+const blou = require('./test/blou');
 
-console.log("Test 2");
-console.log(other);
+console.log("TEST!");
+const app = new Vue({
+  el: "#app",
+  data: {
+    message: "Hello World 8!",
+  }
+});

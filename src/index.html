@@ -2,10 +2,10 @@
   <head>
     <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <link rel="stylesheet" href="static/css/base.css">
-    <script src="/static/js/index.js"></script>
     <!-- No Google Analytics, Neat -->
   </head>
-  <body>
+  <body >
+    <div id="app">
     <div id="main">
       <div id="top">
         <div tabindex="1" class="bordered" id="main-left">
@@ -27,12 +27,15 @@
         boop
       </div>
       <div tabindex="4" class="bordered">
-        beep
+        <span>{{ message }}</span>
       </div>
       <div tabindex="5" class="bordered">
         bam
       </div>
     </div>
+    </div>
+    <script src="/static/js/index.js"></script>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
   </body>
   <!-- So you like source code? -->
 </html>

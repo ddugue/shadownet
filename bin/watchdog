@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
+import os
+import time
+import logging
+import configparser
+import subprocess
+
+from watchdog.observers import Observer
+from watchdog.events import RegexMatchingEventHandler
+
+
+class ShellCommandEventHandler(RegexMatchingEventHandler):
+    def __init__(self, cmd="echo %(filename)s", *args, **kwargs):
+        self._cmd = cmd
+        super(ShellCommandEventHandler, self).__init__(*args, **kwargs)
+
+    def execute_action(self, filename):
+        full_command = self._cmd % {"filename": filename}
+        return_code = subprocess.call(full_command, shell=True)
+
+    def on_modified(self, event):
+        logging.info("File modified: %s", event.src_path)
+        self.execute_action(event.src_path)
+
+    def on_created(self, event):
+        logging.info("File created: %s", event.src_path)
+        self.execute_action(event.src_path)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(message)s",
+                        datefmt='%Y-%m-%d %H:%M:%S')
+
+    conf_file = sys.argv[1] if len(sys.argv) > 1 else None
+    if conf_file:
+        config = configparser.RawConfigParser()
+        config.read(conf_file)
+        sections = config.sections()
+        observers = []
+        for section in sections:
+            values = dict(config.items(section))
+            cwd = os.path.join(os.getcwd(), values.get("cwd", "."))
+            regexes = values.get("patterns", "").split(",")
+            ignore_regexes = values.get("ignore_patterns", "").split(",")
+            # regexes = [r".*\.html$",r".*\.djhtml$"]
+            # ignore_regexes = [r".*#.*", r".*~.*"]
+            print(cwd)
+            print(regexes)
+            print(ignore_regexes)
+            recursive = values.get("recursive", True)
+            event_handler = ShellCommandEventHandler(
+                cmd=values.get("cmd"),
+                regexes=regexes,
+                ignore_regexes=ignore_regexes,
+                ignore_directories=True)
+            observer = Observer()
+            observer.schedule(event_handler, cwd, recursive=recursive)
+            observer.start()
+            observers.append(observer)
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            for o in observers:
+                o.unschedule_all()
+                o.stop()
+        for o in observers:
+            o.join()

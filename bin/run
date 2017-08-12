@@ -3,7 +3,13 @@
 SCRIPT=$(readlink -f "$0")
 # Absolute path this script is in, thus /home/user/bin
 SCRIPTPATH=$(dirname "$SCRIPT")
+set -e
 
-make all
-node node_modules/http-server/bin/http-server ./dist -p 3333
-echo "Yeah"
+# tup monitor --autoupdate
+# node node_modules/http-server/bin/http-server ./dist -p 3333
+
+tup upd
+parallel --linebuffer --halt now,fail=1 ::: "node node_modules/http-server/bin/http-server ./build-debug/dist -p 3333" \
+         "tup monitor --autoupdate -f" \
+         "tiny-lr 2>&1 >/dev/null" \
+         "bin/watchdog etc/watchdog.conf"

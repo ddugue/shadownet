@@ -1,0 +1,22 @@
+NODE_CMD = node node_modules
+# BFLAGS = --cachefile tmp/browserify-cache.json
+SFLAGS = --output-style compressed
+
+ifdef DEBUG
+      BFLAGS += -d
+      SFLAGS += --source-map-embed true
+      SFLAGS += --source-map-contents true
+endif
+
+# HTML
+: src/index.html |> cp %f %o |> dist/index.html
+
+# Javascript
+: src/static/js/*.js \
+  |> $(NODE_CMD)/browserify/bin/cmd.js $(BFLAGS) %f > %o  \
+  |> dist/static/js/index.js
+
+# Sass
+: src/static/css/*.scss \
+  |> $(NODE_CMD)/node-sass/bin/node-sass $(SFLAGS) %f> %o \
+  |> dist/static/css/%B.css
