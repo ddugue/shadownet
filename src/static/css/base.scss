@@ -1,17 +1,28 @@
-$cyan: #519AA2;
-$light-cyan: #7de1ec;
+$light-cyan: #90D6E3;
+$cyan: darken($light-cyan, 40%);
+$dark-cyan: #227685;
 $black: #060a0a;
+$white: #FAFAFA;
+
+$background: "https://cdnb.artstation.com/p/assets/images/images/001/745/563/large/richard-roberts-cyberpunk.jpg?1452114862";
 
 body {
-    background: $black;
+    // background: $black;
+    background: url(#{$background});
+    box-sizing: border-box;
+    height: 100%;
+    padding: 0.5em;
+    margin: 0;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
-    height: auto;
-    margin: 0;
-    box-sizing: border-box;
     font-family: 'Inconsolata', monospace;
+    font-size: 12px;
     text-shadow: 0px 0px 13px -1px rgba(60,108,113,1);
-    padding: 0.5em;
 
     & > div {
         box-sizing: border-box;
@@ -19,9 +30,87 @@ body {
     }
 }
 
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
 
+hr {
+    border-color: $dark-cyan;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none
+}
+
+.reply {
+    position: relative;
+    margin:0.6em 0;
+    padding: 0.4em;
+
+    &:nth-child(odd) {
+        color: $white;
+        .header {
+            color: #888;
+        }
+        &:before, &:after {
+            border-color: #AAA;
+        }
+    }
+
+    .header {
+        color: $cyan;
+        h3 {
+            display:inline;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        .small {
+            font-size: 0.8em;
+        }
+        margin-bottom: 0.6em;
+    }
+
+    &:before, &:after {
+        // content: "";
+        position: absolute;
+        width: 1em;
+        height: 1em;
+    }
+
+    &:before {
+        top: 0;
+        left: 0;
+        border-top: 1px solid $dark-cyan;
+        border-left: 1px solid $dark-cyan;
+    }
+
+    &:after {
+        top: 0;
+        right: 0;
+        border-top: 1px solid $dark-cyan;
+        border-right: 1px solid $dark-cyan;
+    }
+
+    p{
+        margin: 0;
+    }
+}
+ul.options {
+    li {
+        width: 100%;
+        display: block;
+        padding: 0.2em 0.4em;
+        &:hover {
+            color: $black;
+            background-color: $light-cyan;
+        }
+    }
+}
 #main{
-    flex-grow: 5;
+    flex-grow: 3;
     min-width: 250px;
     display:flex;
     flex-direction: column;
@@ -52,6 +141,8 @@ body {
 }
 
 .bordered {
+    background: $black;
+    position: relative;
     padding: 0.5em;
     border: 2px solid $cyan;
     margin: 0.5em;
@@ -61,6 +152,12 @@ body {
 
     &:focus {
         border-color:$light-cyan;
+
+        .powerbar {
+            border-color:$light-cyan;
+            background: $light-cyan;
+            color: $black;
+        }
     }
 }
 
@@ -78,4 +175,47 @@ button {
         background: $light-cyan;
         color: $black;
     }
+}
+
+.reader {
+    overflow-y: scroll;
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    padding: inherit;
+}
+
+.powerbar {
+    &.bottom {
+        border-top: 2px solid $cyan;
+        + .reader {
+            bottom: 2em;
+        }
+    }
+    &.top {
+        border-bottom: 2px solid $cyan;
+
+        + .reader {
+            top: 2em;
+        }
+    }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.2em 0.4em;
+}
+.top {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+.bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }

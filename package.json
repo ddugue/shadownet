@@ -20,14 +20,18 @@
   },
   "homepage": "https://github.com/ddugue/shadownet#readme",
   "dependencies": {
-    "vue": "^2.4.2"
+    "firebase": "^4.2.0",
+    "vue": "^2.4.2",
+    "vuefire": "^1.4.3"
   },
   "browser": {
     "vue": "vue/dist/vue.common.js"
   },
   "devDependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
     "browserify": "^14.4.0",
     "http-server": "^0.10.0",
-    "node-sass": "^4.5.3"
+    "node-sass": "^4.5.3",
+    "vueify": "^9.4.1"
   }
 }

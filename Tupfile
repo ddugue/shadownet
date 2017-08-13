@@ -1,11 +1,12 @@
 NODE_CMD = node node_modules
-# BFLAGS = --cachefile tmp/browserify-cache.json
+BFLAGS = -t vueify
 SFLAGS = --output-style compressed
 
 ifdef DEBUG
       BFLAGS += -d
       SFLAGS += --source-map-embed true
       SFLAGS += --source-map-contents true
+      # TODO: Add production variables
 endif
 
 # HTML
